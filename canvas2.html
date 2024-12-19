@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+  <style>
+    .vapor {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .vapor .vaporBox {
+      position: relative;
+      width: 100%;
+      z-index: 1;
+      line-height: 0;
+    }
+
+    .vapor .vaporBox img {
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+    }
+
+    .vapor .vaporBox__video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      width: 100%;
+      z-index: 3;
+    }
+
+    .vapor .vaporBox .vaporBottomMask {
+      position: absolute;
+      bottom: 0%;
+      left: 0;
+      z-index: 4;
+      width: 100%;
+      height: 10vh;
+      background: -webkit-gradient(linear, left top, left bottom, from(rgba(26, 26, 26, 0)), color-stop(85%, #000000));
+      background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #000000 85%);
+    }
+
+    .vapor .vaporBox__textBox {
+      display: none;
+      z-index: 4;
+      text-align: center;
+      max-width: 1280px;
+      padding: 0 25px;
+      margin: 0 auto;
+    }
+
+    .vapor .vaporBox__textBox-title {
+      text-transform: none;
+      margin-bottom: 40px;
+    }
+
+    .vapor .vaporBox__textBox-figure {
+      max-width: 100%;
+      width: 150px;
+      margin: 0 auto 40px;
+    }
+
+    .vapor .vaporBox__textBox-figure img {
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+    }
+
+    .vapor .vaporText {
+      width: 100%;
+      z-index: 8;
+      background: #000;
+      padding-bottom: 20px;
+    }
+
+    .vapor .vaporText p {
+      text-shadow: 0 0 10px #000, 0 0 10px #000, 0 0 10px #000;
+    }
+
+    .vapor .vaporText .contentBox {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .vapor .vaporText .contentBox__title {
+      text-transform: none;
+      margin-bottom: 10px;
+    }
+
+    .vapor .vaporText .contentBox__txt {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      width: 80%;
+      margin: auto;
+    }
+
+    .vapor .vaporText .contentBox__txt li {
+      width: 50%;
+    }
+
+    .vapor .vaporText .contentBox__txt b {
+      font-size: 60px;
+    }
+
+    .vapor .vaporText .contentBox__txt span {
+      font-size: 20px;
+    }
+
+    .vapor .vaporText .contentBox__figure {
+      max-width: 100%;
+      width: 100px;
+      margin: 0 auto 10px;
+    }
+
+    .vapor .vaporText .contentBox__figure img {
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+    }
+
+    @media (min-width: 576px) {
+      .vapor .vaporText .contentBox__txt {
+        width: 50%;
+      }
+    }
+
+    @media (min-width: 996px) {
+      .vapor {
+        height: 100%;
+      }
+
+      .vapor .vaporBox .bottomMask {
+        position: absolute;
+        bottom: -1%;
+        z-index: 4;
+        height: 20vh;
+      }
+
+      .vapor .vaporBox__textBox {
+        position: absolute;
+        top: 105%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        z-index: 7;
+        text-align: center;
+        max-width: 1280px;
+        padding: 0 25px;
+        margin: 0 auto;
+      }
+
+      .vapor .vaporText {
+        background: transparent;
+        position: absolute;
+        bottom: 1%;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+      }
+
+      .vapor .vaporText .contentBox__txt {
+        width: 30%;
+      }
+    }
+
+    @media (min-width: 1600px) {
+      .vapor .vaporBox__textBox {
+        top: 88%;
+      }
+
+      .vapor .vaporText {
+        bottom: 9%;
+      }
+    }
+  </style>
+
+  <section class="vapor pd-block">
+
+    <div class="vaporBox">
+      <img
+        src="https://storage-asset.msi.com/global/picture/image/feature/nb/2023_RPLS/Stealth-18-AI-Studio-A1V/video/vapor/0000.jpg"
+        alt="Stealth 18 AI Studio A1V cooler">
+      <canvas class="vaporBox__video"> </canvas>
+      <div class="vaporBottomMask"></div>
+    </div>
+
+    <div class="vaporText msi__container">
+      <div class="contentBox vaporTextAnimation">
+        <figure class="contentBox__figure">
+          <img
+            src="https://storage-asset.msi.com/global/picture/image/feature/nb/2023_RPLS/Stealth-18-AI-Studio-A1V/vapor-icon.png"
+            alt="Vapor Chamber Cooler">
+        </figure>
+        <h2 class="contentBox__title msiText title--main">Vapor Chamber Cooler</h2>
+        <p class="msiText">The new Vapor Chamber Cooler design, enhanced by the Cooler Boost Technology, is a key
+          component of the Stealth 18 AI Studio. With its increased heat capacity, this cutting-edge design effectively
+          lowers both noise levels and temperatures,
+          managing the thermal flow and maximize performance when running demanding applications.</p>
+
+        <ul class="contentBox__txt">
+          <li class="performance">
+            <div class="data__value"><b>2 <span>Fans</span></b></div>
+          </li>
+          <li class="performance">
+            <div class="data__value"><b>4 <span>Exhausts</span></b></div>
+          </li>
+        </ul>
+</body>
+<script>
+  const canvasVapor = document.querySelector(".vaporBox__video");
+  const contextVapor = canvasVapor.getContext("2d");
+  canvasVapor.width = 1920;
+  canvasVapor.height = 1080;
+  const framesVapor = {
+      frame: 0,
+  };
+  const frameCountVapor = 60;
+  const imagesVarpor = [];
+  const currentFrameVarpor = (index) => `https://storage-asset.msi.com/global/picture/image/feature/nb/2023_RPLS/Stealth-18-AI-Studio-A1V/video/vapor/${(index).toString().padStart(4, "0")}.jpg`;
+  for (let i = 0; i < frameCountVapor; i++) {
+      const imgVarpor = new Image();
+      imgVarpor.src = currentFrameVarpor(i);
+      imagesVarpor.push(imgVarpor);
+  }
+  // let clickState = false
+  gsap.registerPlugin(ScrollTrigger)
+  let tlVarpor = gsap.timeline({
+      scrollTrigger: {
+          trigger: ".vapor",
+          start: "center center",
+          // end: "+=2000",
+          // markers: {startColor: "blue", endColor: "red", fontSize: "18px", fontWeight: "bold", indent: 20},
+          pin: true,
+          scrub: 2
+      }
+  });
+  if (window.matchMedia("(min-width: 996px)").matches) {
+      // console.log("30")
+      tlVarpor
+          .set(".vaporTextAnimation", {
+              autoAlpha: 0
+          })
+          .to(framesVapor, {
+              frame: 59,
+              snap: "frame",
+              ease: "none",
+              onUpdate: render,
+          })
+          .to(".vaporTextAnimation", {
+              autoAlpha: 1,
+          })
+
+      function render() {
+          contextVapor.clearRect(0, 0, canvasVapor.width, canvasVapor.height);
+          contextVapor.drawImage(imagesVarpor[framesVapor.frame], 0, 0, 1920, 1080);
+      }
+  } else {
+      // console.log("12")
+      tlVarpor
+          .to(framesVapor, {
+              frame: 59,
+              snap: "frame",
+              ease: "none",
+              onUpdate: render,
+          })
+
+      function render() {
+          contextVapor.clearRect(0, 0, canvasVapor.width, canvasVapor.height);
+          contextVapor.drawImage(imagesVarpor[framesVapor.frame], 0, 0, 1920, 1080);
+      }
+  }
+</script>
+</html>
