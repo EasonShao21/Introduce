@@ -14,6 +14,12 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -61,6 +67,9 @@ body {
 .banner {
   position: relative;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,6 +93,7 @@ body {
   position: relative;
   width: 50%;
   height: 100vh;
+  height: 100svh;
   background-image: url("/images/Eason-pic.jpg");
   -webkit-filter: grayscale(100%);
   background-position: center center;
@@ -100,11 +110,15 @@ body {
 }
 .banner .bannerTitle {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
   overflow: hidden;
   border-bottom: 1px solid #fff;
 }
 .banner .bannerTitle .titleText {
-  font-size: 5vw;
+  font-size: clamp(2.5rem, 5vw, 5rem);
   color: #fff;
 }
 .banner .decorationText {
@@ -295,28 +309,31 @@ body {
   justify-content: center;
   align-items: center;
   margin: 20px;
-  width: 7vw;
-  height: 7vw;
+  width: clamp(48px, 7vw, 88px);
+  height: clamp(48px, 7vw, 88px);
+  flex: 0 0 clamp(48px, 7vw, 88px);
+  box-sizing: border-box;
   border-radius: 50%;
   border: 2px solid #878176;
   text-decoration: none;
-  transition: all 0.1s;
+  transition: border-color 0.1s;
 }
 @media only screen and (max-width: 767px) {
   .first-article .container-fluid .contactBox .buttonArea .shareBtn {
     margin: 10px;
-    width: 10vw;
-    height: 10vw;
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
   }
 }
 .first-article .container-fluid .contactBox .buttonArea .shareBtn i {
-  font-size: 3vw;
+  font-size: clamp(18px, 3vw, 32px);
   color: #dbc5a4;
   transition: all 0.2s;
 }
 @media only screen and (max-width: 767px) {
   .first-article .container-fluid .contactBox .buttonArea .shareBtn i {
-    font-size: 5vw;
+    font-size: 18px;
   }
 }
 .first-article .container-fluid .contactBox .buttonArea .shareBtn:hover i {
@@ -329,24 +346,27 @@ body {
 
 .horizSlider {
   position: relative;
-  white-space: nowrap;
-  overflow: auto;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #030303;
 }
-.horizSlider::-webkit-scrollbar {
-  height: 4px;
-}
-.horizSlider::-webkit-scrollbar-track {
-  background-color: #878176;
-  border-radius: 10px;
-  margin: 20px 100%;
-}
-.horizSlider::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #dbc5a4;
+
+.sliderTrack {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
 }
 
 .horizSlider .slide {
-  display: inline-block;
+  display: block;
+  flex: 0 0 auto;
   position: relative;
 }
 
@@ -364,21 +384,29 @@ body {
 }
 
 .slideImage {
+  display: block;
+  width: min(100vw, 1000px);
+  height: auto;
+  aspect-ratio: 2/1;
+  object-fit: cover;
   transform-origin: bottom left;
 }
 
 .pic-container {
   width: 100%;
   height: 100vh;
+  height: 100svh;
   position: relative;
+  overflow: hidden;
 }
 .pic-container .pic-canvas {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: min(100vw, 177.78svh);
   max-width: 100vw;
-  max-height: 100vh;
+  max-height: 100svh;
 }
 .pic-container p {
   position: absolute;
@@ -557,7 +585,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 4px;
+  height: 8px;
   background-color: rgba(255, 255, 255, 0.2);
   overflow: hidden;
   z-index: 50;
@@ -568,8 +596,192 @@ body {
   top: 50%;
   transform: translate(0, -50%);
   width: 0%;
-  height: 2px;
+  height: 6px;
   background-color: #dbc5a4;
+}
+
+/* Experience is a viewport-sized scene; scroll only scrubs its story copy. */
+.first-article {
+  height: 100vh;
+  height: 100svh;
+  padding: clamp(16px, 3vh, 36px) clamp(16px, 4vw, 64px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.first-article .container-fluid {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(8px, 2vh, 20px);
+}
+.first-article .mainTitle {
+  margin: 0;
+}
+.first-article .container-fluid .articleSection {
+  min-height: 0;
+}
+.first-article .container-fluid .articleSection .textContent {
+  width: 100%;
+  margin: 0;
+}
+.first-article .container-fluid .articleSection .textContent .yearBar .numberBar {
+  margin-top: 0;
+}
+.first-article .container-fluid .articleSection .textContent .textArea {
+  width: 100%;
+  margin-top: clamp(16px, 4vh, 48px);
+  overflow: hidden;
+}
+.first-article .container-fluid .articleSection .textContent .textArea .textContentArticle {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+.first-article .container-fluid .contactBox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 0;
+}
+
+@media (max-width: 767px) {
+  .horizSlider {
+    height: 70vh;
+    height: 70svh;
+    min-height: 320px;
+  }
+  .slideImage {
+    width: 86vw;
+  }
+  .banner {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  .banner .bannerPic {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+  }
+  .banner .bannerPic .cover {
+    background: linear-gradient(180deg, rgba(3, 3, 3, 0.1) 20%, rgba(3, 3, 3, 0.55) 56%, #030303 100%);
+  }
+  .banner .bannerInfo {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    bottom: clamp(72px, 12vh, 112px);
+    width: calc(100% - 40px);
+  }
+  .banner .bannerInfo .infoText {
+    width: 100%;
+    margin: 0;
+  }
+  .banner .bannerInfo .infoText .infoList {
+    margin: 5px 0;
+    white-space: normal;
+    font-size: clamp(20px, 5.5vw, 24px);
+    line-height: 1.5;
+  }
+  .banner .bannerTitle {
+    top: 34%;
+    max-width: calc(100% - 32px);
+  }
+  .banner .bannerTitle .titleText {
+    font-size: clamp(2.5rem, 11vw, 4.5rem);
+  }
+  .banner .decorationText {
+    font-size: clamp(2.6rem, 12vw, 5rem);
+    bottom: 4px;
+  }
+  .first-article .container-fluid .articleSection {
+    width: 100%;
+  }
+  .first-article .container-fluid .articleSection .scene.seaScene {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .first-article .container-fluid .articleSection .textContent {
+    width: 100%;
+  }
+  .first-article {
+    padding: 14px 16px;
+  }
+  .first-article .container-fluid {
+    gap: 8px;
+  }
+  .first-article .container-fluid .mainTitle .title h1 {
+    font-size: clamp(24px, 7vw, 30px);
+  }
+  .first-article .container-fluid .articleSection .textContent .yearBar .numberBar {
+    flex-wrap: wrap;
+    gap: 4px;
+    border: 0;
+    padding: 0;
+  }
+  .first-article .container-fluid .articleSection .textContent .yearBar .numberBar .number {
+    margin: 0;
+  }
+  .first-article .container-fluid .articleSection .textContent .yearBar .numberBar .number a {
+    font-size: clamp(10px, 3.2vw, 13px);
+    letter-spacing: 0;
+    padding: 8px clamp(5px, 1.8vw, 10px);
+    white-space: nowrap;
+  }
+  .first-article .container-fluid .articleSection .textContent .textArea {
+    margin-top: 3vh;
+  }
+  .first-article .container-fluid .articleSection .textContent .textArea .textContentArticle {
+    font-size: clamp(15px, 4vw, 18px);
+    padding: 0 8px;
+    line-height: 1.6;
+  }
+  .first-article .container-fluid .contactBox .buttonArea .shareBtn {
+    width: 48px;
+    height: 48px;
+    margin: 6px 10px;
+  }
+  .first-article .container-fluid .contactBox .buttonArea .shareBtn i {
+    font-size: 18px;
+  }
+}
+@media (max-width: 767px) and (orientation: landscape) {
+  .banner {
+    min-height: 520px;
+    min-height: max(100svh, 520px);
+  }
+  .banner .bannerPic {
+    height: 100%;
+  }
+  .banner .bannerInfo {
+    bottom: 56px;
+  }
+  .banner .bannerTitle {
+    top: 30%;
+  }
+  .banner .decorationText {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+  .horizSlider {
+    height: 80svh;
+    min-height: 280px;
+  }
+  .slideImage {
+    width: min(86vw, 160svh);
+  }
+  .first-article {
+    min-height: 520px;
+    min-height: max(100svh, 520px);
+  }
 }
 
 /*# sourceMappingURL=all.css.map */

@@ -47,105 +47,97 @@ bannerAn.from(
     { xPercent: -50,color: '#dbc5a4', duration: 30 }, 'step2'
    )
 
-// article section: Each icon has its own animation
-const contactBox = gsap.timeline({
-  scrollTrigger: {
-      trigger: "#article",
-      start: "top 50%",
-      end: "bottom 50%",
-      toggleActions: "restart none none none"
-}});
-
-// grow-story section: talking a story
+// Keep the Experience section fixed while the experience copy follows scroll.
 const article = gsap.timeline();
 article
   .to(
     "#hash1",
-    { backgroundColor: '#dbc5a4', color: '#ffffff'},
-    'hash0'
+    { backgroundColor: '#dbc5a4', color: '#ffffff', duration: 0.2 },
+    0
    )
   .from(
     ".textArea",
-    { yPercent: 10, opacity: 0 },
-    'hash0'
+    { y: 32, autoAlpha: 0.75, duration: 0.4, ease: "power2.out" },
+    0
+  )
+  .fromTo(
+    "#briefcase",
+    { rotation: -140, y: 20, transformOrigin: "50% 50%" },
+    { rotation: 0, y: 0, duration: 0.55, ease: "back.out(1.6)" },
+    0.05
+  )
+  .fromTo(
+    "#chalkboard",
+    { rotationY: 180, y: 20, transformOrigin: "50% 50%" },
+    { rotationY: 0, y: 0, duration: 0.55, ease: "back.out(1.6)" },
+    0.9
+  )
+  .fromTo(
+    "#copyLink",
+    { rotation: 140, y: 20, transformOrigin: "50% 50%" },
+    { rotation: 0, y: 0, duration: 0.55, ease: "back.out(1.6)" },
+    1.9
   )
   .to(
     "#hash1",
-    { backgroundColor: '#ffffff', color: '#878176' },
-    'hash1'
+    { backgroundColor: '#ffffff', color: '#878176', duration: 0.2 },
+    0.8
   )
   .to(
     "#hash2",
-    { backgroundColor: '#dbc5a4', color: '#ffffff' },
-    'hash1'
+    { backgroundColor: '#dbc5a4', color: '#ffffff', duration: 0.2 },
+    0.8
   )
   .to(
     ".textContentArticle",
-    { xPercent: -100 }
+    { xPercent: -100, duration: 0.6 },
+    1
   )
   .to(
     "#hash2",
-    { backgroundColor: '#ffffff', color: '#878176' },
-    'hash2'
+    { backgroundColor: '#ffffff', color: '#878176', duration: 0.2 },
+    1.8
   )
   .to(
     "#hash3",
-    { backgroundColor: '#dbc5a4', color: '#ffffff' },
-    'hash2'
+    { backgroundColor: '#dbc5a4', color: '#ffffff', duration: 0.2 },
+    1.8
    )
   .to(
     ".textContentArticle",
-    { xPercent: -200 },
-    'hash3'
-  )
-  .to(
-    "#hash3",
-    { backgroundColor: '#ffffff',color: '#878176' },
-    'hash3'
+    { xPercent: -200, duration: 0.6 },
+    2
   )
 
 ScrollTrigger.create({
     animation: article,
     trigger: ".first-article",
     start: "top top",
-    end: "+=5000",
-    toggleActions: "restart none none none",
+    end: "+=2400",
     scrub: 1,
     pin: true,
-    anticipatePin: 1
+    anticipatePin: 1,
+    invalidateOnRefresh: true
 });
 
+const slider = document.querySelector(".horizSlider");
+const sliderTrack = slider?.querySelector(".sliderTrack");
 
-contactBox
-  .from(
-    "#briefcase",
-    { opacity:1, rotate: '360deg', duration: 0.5 }
-  )
-  .fromTo(
-    "#chalkboard",
-    { backgroundColor: '#dbc5a4' },
-    { backgroundColor: 'transparent', duration: 0.5 }
-  )
-  .from(
-    "#copyLink",
-    { opacity:1, rotateY: '360deg', duration: 0.5 }
-  )
-
-gsap.utils.toArray(".slideText").forEach(text => {
-  gsap.timeline({
-    defaults: {ease: "none"},
+if (slider && sliderTrack) {
+  gsap.to(sliderTrack, {
+    x: () => -Math.max(0, sliderTrack.scrollWidth - slider.clientWidth),
+    ease: "none",
     scrollTrigger: {
-      scroller: text.closest(".horizSlider"),
-      horizontal: true,
-      trigger: text.closest(".slide"),
-      start: "left right",
-      end: "left left",
-      scrub: true
+      trigger: slider,
+      start: "top top",
+      end: () => `+=${Math.max(1, sliderTrack.scrollWidth - slider.clientWidth)}`,
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true
     }
-  })
-  .fromTo(text, {x: 250}, {x: -250}, 0)
-  .from(text.nextElementSibling, {scale: 0.8}, 0)
-});
+  });
+}
 
 //pic frames start
 const canvas = document.getElementById("pic-canvas");
@@ -156,7 +148,7 @@ canvas.height = 1080;
 
 const frameCount = 14;
 const currentFrame = index => (
-`../../images/ani/${(index + 1).toString().padStart(2, '0')}.png`
+`./images/ani/${(index + 1).toString().padStart(2, '0')}.png`
 );
 const images = []
 const pic = {
@@ -171,12 +163,13 @@ for (let i = 0; i < frameCount; i++) {
 
 let picStart = gsap.timeline({
     scrollTrigger: {
-        trigger: ".transition__point",
+        trigger: ".pic-container",
         pin: true,
-        start: "0% 0%",
-        end: "+=" + frameCount,
-        scrub: 2,
+        start: "top top",
+        end: () => `+=${window.innerHeight * 2}`,
+        scrub: 1,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
         // markers: {startColor: "white", endColor: "white", fontSize: "18px", fontWeight: "bold", indent: 20},
     },
 });
@@ -194,8 +187,10 @@ picStart.to(pic, {
 images[0].onload = render;
 
 function render() {
-context.clearRect(0, 0, canvas.width, canvas.height);
-context.drawImage(images[pic.frame], 0, 0); 
+  const frame = images[pic.frame];
+  if (!context || !frame?.complete || !frame.naturalWidth) return;
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(frame, 0, 0, canvas.width, canvas.height);
 }
 
 // progressBar
