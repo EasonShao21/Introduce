@@ -1,6 +1,4 @@
-import { gsap } from '../../node_modules/gsap/index.js';
-import ScrollTrigger from "../../node_modules/gsap/ScrollTrigger.js";
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(gsap.ScrollTrigger);
 
 
 // header cover: text animation
@@ -148,7 +146,7 @@ canvas.height = 1080;
 
 const frameCount = 14;
 const currentFrame = index => (
-`./images/ani/${(index + 1).toString().padStart(2, '0')}.png`
+`images/ani/${(index + 1).toString().padStart(2, '0')}.png`
 );
 const images = []
 const pic = {
